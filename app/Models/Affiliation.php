@@ -11,6 +11,14 @@ class Affiliation extends Model
     
     protected $guarded = ["id"];
 
+    protected $fillable = [
+        'lecturer_id',    
+        'university_id',  
+        'nidn',
+        'status',
+        'rejection_reason'
+    ];
+
     public function lecturer(){
         return $this->belongsTo(Lecturer::class);
     }

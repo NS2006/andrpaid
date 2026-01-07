@@ -14,9 +14,9 @@ return new class extends Migration
             $table->string('title');
             $table->string('author');
             $table->integer('year');
-            $table->string('publication')->nullable(); // Journal/Conference
+            $table->string('publication')->nullable();
             $table->string('url')->nullable();
-            $table->json('key_points')->nullable(); // Stored as JSON array
+            $table->json('key_points')->nullable(); 
             $table->boolean('is_analyzed')->default(false);
             $table->timestamps();
         });

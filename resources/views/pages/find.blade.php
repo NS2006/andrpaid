@@ -56,7 +56,6 @@
         @include('partials.navbarProfile')
     @endauth
 
-    {{-- HERO / SEARCH SECTION --}}
     <div class="search-header text-center">
         <div class="container">
             <h1 class="fw-bold text-dark mb-3">Connect with Researchers</h1>
@@ -64,9 +63,8 @@
             
             <div class="row justify-content-center">
                 <div class="col-lg-8">
-                    {{-- Form submits to the same page --}}
                     <form action="/find" method="GET">
-                        {{-- Preserve existing filters as hidden inputs if needed, or let them reset on new search --}}
+
                         @if(request('region')) <input type="hidden" name="region" value="{{ request('region') }}"> @endif
                         @if(request('sort')) <input type="hidden" name="sort" value="{{ request('sort') }}"> @endif
 
@@ -79,7 +77,6 @@
                 </div>
             </div>
             
-            {{-- Reset Filters Link --}}
             @if(request()->hasAny(['q', 'region', 'sort']))
                 <div class="mt-3">
                     <a href="/find" class="text-decoration-none text-danger small fw-bold">
@@ -90,14 +87,12 @@
         </div>
     </div>
 
-    {{-- RESULTS SECTION --}}
     <div class="container pb-5">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h5 class="fw-bold text-dark mb-0">
                 Found {{ $lecturers->total() }} Researchers
             </h5>
             
-            {{-- DYNAMIC FILTER DROPDOWN --}}
             <div class="d-flex gap-2">
                 <div class="dropdown">
                     <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown">
@@ -150,12 +145,10 @@
             </div>
         </div>
 
-        {{-- GRID LAYOUT --}}
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
             @forelse ($lecturers as $lecturer)
                 <div class="col">
                     <div class="researcher-card p-4 d-flex flex-column h-100">
-                        {{-- Header: Avatar + Name --}}
                         <div class="d-flex align-items-center gap-3 mb-3">
                             <img src="https://ui-avatars.com/api/?name={{ $lecturer->user->name }}&background=random&size=128" 
                                  class="card-avatar">
@@ -168,8 +161,6 @@
                                 <span class="badge bg-primary bg-opacity-10 text-primary rounded-pill px-2">Lecturer</span>
                             </div>
                         </div>
-
-                        {{-- Body: Affiliation --}}
                         <div class="mb-3">
                             <div class="d-flex align-items-center text-muted small mb-2">
                                 <i class="bi bi-building me-2"></i>
@@ -182,8 +173,6 @@
                                 <span>{{ $lecturer->province->name ?? 'Indonesia' }}</span>
                             </div>
                         </div>
-
-                        {{-- Footer: Papers Count & Button --}}
                         <div class="mt-auto pt-3 border-top d-flex justify-content-between align-items-center">
                             <small class="text-muted">
                                 <i class="bi bi-file-text me-1"></i> 
@@ -205,8 +194,6 @@
                 </div>
             @endforelse
         </div>
-
-        {{-- PAGINATION --}}
         <div class="mt-5 d-flex justify-content-center">
             {{ $lecturers->onEachSide(1)->links('pagination::bootstrap-5') }}
         </div>

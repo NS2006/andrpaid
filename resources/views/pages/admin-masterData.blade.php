@@ -105,8 +105,6 @@
             </div>
         </div>
 
-
-        {{-- CREATE MODAL --}}
         <div class="modal fade" id="createModal" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content master-data-modal-content">
@@ -144,7 +142,6 @@
             </div>
         </div>
 
-        {{-- EDIT MODAL --}}
         <div class="modal fade" id="editModal" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content master-data-modal-content">
@@ -182,7 +179,6 @@
             </div>
         </div>
 
-        {{-- DELETE MODAL --}}
         <div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-sm">
                 <div class="modal-content master-data-modal-content text-center p-4">
@@ -396,7 +392,6 @@
             </div>
         </div>
 
-        {{-- CREATE MODAL --}}
         <div class="modal fade" id="createModal" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content master-data-modal-content">
@@ -434,7 +429,6 @@
             </div>
         </div>
 
-        {{-- EDIT MODAL --}}
         <div class="modal fade" id="editModal" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content master-data-modal-content">
@@ -472,7 +466,6 @@
             </div>
         </div>
 
-        {{-- DELETE MODAL --}}
         <div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-sm">
                 <div class="modal-content master-data-modal-content text-center p-4">
@@ -583,7 +576,6 @@
         @endpush
     @endif
 
-    {{-- SUCCESS POP UP --}}
     @if (session('success'))
         <div class="modal fade custom-modal-backdrop" id="statusModal" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
@@ -621,7 +613,6 @@
         @endpush
     @endif
 
-    {{-- ERROR POP UP --}}
     @if (session('error'))
         <div class="modal fade custom-modal-backdrop" id="statusModal" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">

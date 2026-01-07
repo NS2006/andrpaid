@@ -290,7 +290,6 @@ class PaperController extends Controller
         if ($currentUser && $currentUser->lecturer) {
             $isOwner = $paper->lecturer_id === $currentUser->lecturer->id;
 
-            // Check if they are a collaborator
             $isCollaborator = Collaboration::where('paper_id', $paper->id)
                 ->where('lecturer_id', $currentUser->lecturer->id)
                 ->exists();
@@ -798,7 +797,7 @@ class PaperController extends Controller
             'id' => uniqid(),
             'type' => 'table',
             'title' => $request->title ?? 'Untitled Table',
-            'content' => [ // Default 3x3 Table
+            'content' => [ 
                 ['Header 1', 'Header 2', 'Header 3'],
                 ['Data 1', 'Data 2', 'Data 3'],
                 ['Data 4', 'Data 5', 'Data 6']

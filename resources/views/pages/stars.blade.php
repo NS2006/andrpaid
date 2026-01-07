@@ -279,7 +279,6 @@
     </div>
 
     @push('scripts')
-        {{-- Client Side Search Logic --}}
         <script>
             document.addEventListener('DOMContentLoaded', function() {
                 const searchInput = document.getElementById('clientSearchInput');
@@ -316,7 +315,6 @@
             });
         </script>
 
-        {{-- Multi-Select Dropdown Logic --}}
         <script type="module">
             document.addEventListener('DOMContentLoaded', function() {
                 function initMultiSelect(wrapperId, data, inputName) {
@@ -435,7 +433,6 @@
             });
         </script>
 
-        {{-- Star Toggle Logic --}}
         <script>
             async function toggleStar(paperId) {
                 const btn = document.getElementById(`star-btn-${paperId}`);

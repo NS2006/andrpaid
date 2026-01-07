@@ -1619,6 +1619,7 @@ namespace App\Models {
      *
      * @property \Illuminate\Support\Carbon|null $updated_at
      * @property \Illuminate\Support\Carbon|null $created_at
+     * @property string|null $nidn
      * @property mixed $province_id
      * @property mixed $user_id
      * @property string|null $portfolioUrl
@@ -1642,6 +1643,7 @@ namespace App\Models {
      * @method static \Illuminate\Database\Eloquent\Builder<Lecturer>|Lecturer wherePortfoliourl($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Lecturer>|Lecturer whereUserId($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Lecturer>|Lecturer whereProvinceId($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Lecturer>|Lecturer whereNidn($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Lecturer>|Lecturer whereCreatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Lecturer>|Lecturer whereUpdatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Lecturer>|Lecturer newModelQuery()

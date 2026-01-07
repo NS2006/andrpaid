@@ -275,7 +275,6 @@
     </div>
 
     @if ($canEdit)
-        {{-- Add Dataset Modal --}}
         <div class="modal fade" id="addDatasetModal" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
@@ -314,7 +313,6 @@
             </div>
         </div>
 
-        {{-- EDIT DATASET MODAL --}}
         <div class="modal fade" id="editDatasetModal" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
@@ -362,7 +360,6 @@
             </div>
         </div>
 
-        {{-- Add Formula Modal --}}
         <div class="modal fade" id="addFormulaModal" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
@@ -409,7 +406,6 @@
             </div>
         </div>
 
-        {{-- Add Code Modal --}}
         <div class="modal fade" id="addCodeModal" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">

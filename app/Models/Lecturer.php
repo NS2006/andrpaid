@@ -11,6 +11,10 @@ class Lecturer extends Model
 
     protected $guarded = ["id"];
 
+    protected $fillable = [
+        'nidn',
+    ];
+
     public function province(){
         return $this->belongsTo(Province::class);
     }

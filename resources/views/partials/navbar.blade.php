@@ -27,13 +27,13 @@
                     </a>
                 </li>
 
-                @notadmin
+                {{-- @notadmin
                     <li class="nav-item">
                         <a class="nav-link px-3 {{ request()->is('messages') ? 'active' : '' }}" href="/messages">
                             <i class="bi bi-chat-dots-fill me-1"></i> Messages
                         </a>
                     </li>
-                @endnotadmin
+                @endnotadmin --}}
 
                 @admin
                     <li class="nav-item">

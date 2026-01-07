@@ -155,7 +155,6 @@
         window.currentPaperFields = {!! json_encode($paper->researchFields->pluck('researchFieldId')) !!};
     </script>
 
-    {{-- DELETE CONFIRMATION MODAL --}}
     <div class="modal fade" id="deletePaperModal" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content border-0 shadow-lg">

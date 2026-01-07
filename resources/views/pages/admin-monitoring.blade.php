@@ -190,7 +190,6 @@
             <script>
                 document.addEventListener('DOMContentLoaded', function() {
 
-                    // --- 1. Prepare Data ---
                     const rawData = @json($chartData);
 
                     const labels = [...new Set(rawData.map(item => item.date))].sort();
@@ -205,7 +204,6 @@
                         return entry ? entry.count : 0;
                     });
 
-                    // --- 2. Chart Rendering ---
                     const volumeCtx = document.getElementById('activityVolumeChart').getContext('2d');
 
                     if (labels.length > 0) {
@@ -220,7 +218,7 @@
                                         backgroundColor: 'rgba(25, 135, 84, 0.1)',
                                         tension: 0.4,
                                         fill: true,
-                                        pointRadius: 3, // Make points visible like dashboard
+                                        pointRadius: 3, 
                                         pointHoverRadius: 5
                                     },
                                     {
@@ -237,7 +235,6 @@
                             },
                             options: {
                                 responsive: true,
-                                // Fix: Add interaction mode to 'index' to show all datasets on hover
                                 interaction: {
                                     mode: 'index',
                                     intersect: false,
@@ -258,7 +255,7 @@
                                             borderDash: [2, 4]
                                         },
                                         ticks: {
-                                            precision: 0 // Avoid decimals (0.5, 1.5)
+                                            precision: 0 
                                         }
                                     },
                                     x: {
@@ -271,7 +268,6 @@
                         });
                     }
 
-                    // --- 3. Distribution Chart (Doughnut) ---
                     const totalLogins = loginData.reduce((a, b) => a + b, 0);
                     const totalLogouts = logoutData.reduce((a, b) => a + b, 0);
 

@@ -1,42 +1,22 @@
-
-
 <?php $__env->startSection('title', 'Results & Analysis - ' . $paper->title); ?>
 
 <?php $__env->startSection('additionalCSS'); ?>
     <link rel="stylesheet" href="<?php echo e(asset('styles/paper.css')); ?>">
-    <style>
-        .result-item-card { border: 1px solid #eee; border-radius: 12px; overflow: hidden; margin-bottom: 30px; box-shadow: 0 5px 20px rgba(0,0,0,0.03); background: #fff; }
-        .result-header { background: #f8f9fa; padding: 15px 20px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
-        .result-body { padding: 25px; }
-        
-        /* Table Editor Styles */
-        .custom-table-wrapper { overflow-x: auto; margin-bottom: 15px; }
-        .custom-table { width: 100%; border-collapse: collapse; }
-        .custom-table td, .custom-table th { border: 1px solid #dee2e6; padding: 10px; min-width: 100px; position: relative; }
-        .custom-table th { background: #f1f3f5; font-weight: 600; }
-        .editable-cell:focus { outline: 2px solid #8e2de2; background: #fdfbf7; }
-
-        /* Analysis Section */
-        .analysis-box { background: #f8f9fa; border-left: 4px solid #8e2de2; padding: 20px; border-radius: 4px; margin-top: 20px; }
-        .bullet-list li { margin-bottom: 8px; font-size: 0.95rem; color: #444; }
-    </style>
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startSection('content'); ?>
     <?php echo $__env->make('partials.navbarPaper', ['paper' => $paper], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
 
     <div class="container py-5">
-        
-        
+
         <?php
             $isLocked = $paper->results_finalized;
-            // User can only interact if they have permission AND it's not finalized
-            $canInteract = $canEdit && !$isLocked; 
+            $canInteract = $canEdit && !$isLocked;
         ?>
 
-        
         <div class="mb-4">
-            <a href="/<?php echo e($user->profileId); ?>/paper/<?php echo e($paper->paperId); ?>/workspace" class="text-decoration-none text-muted small fw-bold">
+            <a href="/<?php echo e($user->profileId); ?>/paper/<?php echo e($paper->paperId); ?>/workspace"
+                class="text-decoration-none text-muted small fw-bold">
                 <i class="bi bi-arrow-left me-1"></i> Back to Workspace
             </a>
         </div>
@@ -44,28 +24,34 @@
         <div class="d-flex justify-content-between align-items-end mb-5">
             <div>
                 <div class="d-flex align-items-center gap-3 mb-2">
-                    <div class="module-icon bg-warning bg-opacity-10 text-warning" style="width: 45px; height: 45px; font-size: 1.2rem; display:flex; align-items:center; justify-content:center; border-radius:8px;">
+                    <div class="module-icon bg-warning bg-opacity-10 text-warning"
+                        style="width: 45px; height: 45px; font-size: 1.2rem; display:flex; align-items:center; justify-content:center; border-radius:8px;">
                         <i class="bi bi-bar-chart-fill"></i>
                     </div>
                     <h3 class="fw-bold text-dark mb-0">Results & Analysis</h3>
                 </div>
-                
+
                 <div class="d-flex align-items-center gap-2">
                     <?php
                         $items = $paper->results_data ?? [];
-                        $chartCount = 0; $tableCount = 0;
-                        foreach($items as $item) {
-                            if($item['type'] === 'chart') $chartCount++;
-                            if($item['type'] === 'table') $tableCount++;
+                        $chartCount = 0;
+                        $tableCount = 0;
+                        foreach ($items as $item) {
+                            if ($item['type'] === 'chart') {
+                                $chartCount++;
+                            }
+                            if ($item['type'] === 'table') {
+                                $tableCount++;
+                            }
                         }
                     ?>
                     <p class="text-muted mb-0 ms-1">
                         <?php echo e($chartCount); ?> Charts • <?php echo e($tableCount); ?> Tables
                     </p>
 
-                    
                     <?php if($isLocked): ?>
-                        <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 ms-2">
+                        <span
+                            class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 ms-2">
                             <i class="bi bi-lock-fill me-1"></i> Finalized
                         </span>
                     <?php else: ?>
@@ -73,9 +59,8 @@
                     <?php endif; ?>
                 </div>
             </div>
-            
+
             <div class="d-flex gap-2">
-                
                 <?php if($canEdit): ?>
                     <form action="/<?php echo e($user->profileId); ?>/paper/<?php echo e($paper->paperId); ?>/finalize-results" method="POST">
                         <?php echo csrf_field(); ?>
@@ -91,7 +76,6 @@
                     </form>
                 <?php endif; ?>
 
-                
                 <?php if($canInteract): ?>
                     <form action="/<?php echo e($user->profileId); ?>/paper/<?php echo e($paper->paperId); ?>/results/add-table" method="POST">
                         <?php echo csrf_field(); ?>
@@ -106,7 +90,6 @@
             </div>
         </div>
 
-        
         <div class="row">
             <div class="col-12">
                 <?php if(empty($paper->results_data)): ?>
@@ -125,7 +108,8 @@
 
                                 </span>
                                 <?php if($canInteract): ?>
-                                    <form action="/<?php echo e($user->profileId); ?>/paper/<?php echo e($paper->paperId); ?>/results/delete" method="POST" onsubmit="return confirm('Delete this item?');">
+                                    <form action="/<?php echo e($user->profileId); ?>/paper/<?php echo e($paper->paperId); ?>/results/delete"
+                                        method="POST" onsubmit="return confirm('Delete this item?');">
                                         <?php echo csrf_field(); ?>
                                         <input type="hidden" name="item_id" value="<?php echo e($item['id']); ?>">
                                         <button type="submit" class="btn btn-link text-danger p-0">
@@ -134,17 +118,21 @@
                                     </form>
                                 <?php endif; ?>
                             </div>
-                            
+
                             <div class="result-body">
-                                
                                 <div class="mb-3">
                                     <?php if($canInteract): ?>
-                                        <form action="/<?php echo e($user->profileId); ?>/paper/<?php echo e($paper->paperId); ?>/results/update" method="POST">
+                                        <form action="/<?php echo e($user->profileId); ?>/paper/<?php echo e($paper->paperId); ?>/results/update"
+                                            method="POST">
                                             <?php echo csrf_field(); ?>
                                             <input type="hidden" name="item_id" value="<?php echo e($item['id']); ?>">
                                             <div class="input-group">
-                                                <input type="text" name="title" class="form-control fw-bold fs-5 border-0 shadow-none px-0" value="<?php echo e($item['title']); ?>" style="background: transparent;" onblur="this.form.submit()"> 
-                                                <button class="btn btn-link text-muted" type="submit"><i class="bi bi-pencil small"></i></button>
+                                                <input type="text" name="title"
+                                                    class="form-control fw-bold fs-5 border-0 shadow-none px-0"
+                                                    value="<?php echo e($item['title']); ?>" style="background: transparent;"
+                                                    onblur="this.form.submit()">
+                                                <button class="btn btn-link text-muted" type="submit"><i
+                                                        class="bi bi-pencil small"></i></button>
                                             </div>
                                         </form>
                                     <?php else: ?>
@@ -152,54 +140,67 @@
                                     <?php endif; ?>
                                 </div>
 
-                                
                                 <?php if($item['type'] === 'chart'): ?>
                                     <div class="text-center bg-light p-3 rounded mb-4">
-                                        <img src="<?php echo e(asset('storage/' . $item['content'])); ?>" alt="Chart" class="img-fluid rounded shadow-sm" style="max-height: 400px;">
+                                        <img src="<?php echo e(asset('storage/' . $item['content'])); ?>" alt="Chart"
+                                            class="img-fluid rounded shadow-sm" style="max-height: 400px;">
                                     </div>
                                 <?php elseif($item['type'] === 'table'): ?>
                                     <div class="custom-table-wrapper">
-                                        <form action="/<?php echo e($user->profileId); ?>/paper/<?php echo e($paper->paperId); ?>/results/update" method="POST" id="form-table-<?php echo e($item['id']); ?>">
+                                        <form action="/<?php echo e($user->profileId); ?>/paper/<?php echo e($paper->paperId); ?>/results/update"
+                                            method="POST" id="form-table-<?php echo e($item['id']); ?>">
                                             <?php echo csrf_field(); ?>
                                             <input type="hidden" name="item_id" value="<?php echo e($item['id']); ?>">
-                                            <input type="hidden" name="table_content" id="input-table-<?php echo e($item['id']); ?>">
-                                            
+                                            <input type="hidden" name="table_content"
+                                                id="input-table-<?php echo e($item['id']); ?>">
+
                                             <table class="custom-table" id="table-<?php echo e($item['id']); ?>">
                                                 <?php $__currentLoopData = $item['content']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $rowIndex => $row): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                     <tr>
                                                         <?php $__currentLoopData = $row; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $colIndex => $cell): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                                            <td contenteditable="<?php echo e($canInteract ? 'true' : 'false'); ?>" class="editable-cell"><?php echo e($cell); ?></td>
+                                                            <td contenteditable="<?php echo e($canInteract ? 'true' : 'false'); ?>"
+                                                                class="editable-cell"><?php echo e($cell); ?></td>
                                                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                                     </tr>
                                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                             </table>
                                         </form>
                                     </div>
-                                    
+
                                     <?php if($canInteract): ?>
                                         <div class="d-flex gap-2 mb-4">
-                                            <button class="btn btn-sm btn-light border" onclick="tableAddRow('<?php echo e($item['id']); ?>')">+ Row</button>
-                                            <button class="btn btn-sm btn-light border" onclick="tableAddCol('<?php echo e($item['id']); ?>')">+ Col</button>
-                                            <button class="btn btn-sm btn-light border" onclick="saveTable('<?php echo e($item['id']); ?>')"><i class="bi bi-save"></i> Save Table</button>
+                                            <button class="btn btn-sm btn-light border"
+                                                onclick="tableAddRow('<?php echo e($item['id']); ?>')">+ Row</button>
+                                            <button class="btn btn-sm btn-light border"
+                                                onclick="tableAddCol('<?php echo e($item['id']); ?>')">+ Col</button>
+                                            <button class="btn btn-sm btn-light border"
+                                                onclick="saveTable('<?php echo e($item['id']); ?>')"><i class="bi bi-save"></i>
+                                                Save Table</button>
                                         </div>
                                     <?php endif; ?>
                                 <?php endif; ?>
 
-                                
                                 <div class="analysis-box">
-                                    <h6 class="fw-bold text-primary mb-3"><i class="bi bi-lightbulb me-2"></i>Key Findings & Analysis</h6>
-                                    
+                                    <h6 class="fw-bold text-primary mb-3"><i class="bi bi-lightbulb me-2"></i>Key Findings
+                                        & Analysis</h6>
+
                                     <ul class="bullet-list ps-3 mb-3">
                                         <?php if(!empty($item['analysis'])): ?>
                                             <?php $__currentLoopData = $item['analysis']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $point): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                 <li class="d-flex justify-content-between">
                                                     <span><?php echo e($point); ?></span>
                                                     <?php if($canInteract): ?>
-                                                        <form action="/<?php echo e($user->profileId); ?>/paper/<?php echo e($paper->paperId); ?>/results/update" method="POST" class="d-inline">
+                                                        <form
+                                                            action="/<?php echo e($user->profileId); ?>/paper/<?php echo e($paper->paperId); ?>/results/update"
+                                                            method="POST" class="d-inline">
                                                             <?php echo csrf_field(); ?>
-                                                            <input type="hidden" name="item_id" value="<?php echo e($item['id']); ?>">
-                                                            <input type="hidden" name="remove_point_index" value="<?php echo e($index); ?>">
-                                                            <button type="submit" class="btn btn-link py-0 px-1 text-danger small"><i class="bi bi-x"></i></button>
+                                                            <input type="hidden" name="item_id"
+                                                                value="<?php echo e($item['id']); ?>">
+                                                            <input type="hidden" name="remove_point_index"
+                                                                value="<?php echo e($index); ?>">
+                                                            <button type="submit"
+                                                                class="btn btn-link py-0 px-1 text-danger small"><i
+                                                                    class="bi bi-x"></i></button>
                                                         </form>
                                                     <?php endif; ?>
                                                 </li>
@@ -210,11 +211,13 @@
                                     </ul>
 
                                     <?php if($canInteract): ?>
-                                        <form action="/<?php echo e($user->profileId); ?>/paper/<?php echo e($paper->paperId); ?>/results/update" method="POST">
+                                        <form action="/<?php echo e($user->profileId); ?>/paper/<?php echo e($paper->paperId); ?>/results/update"
+                                            method="POST">
                                             <?php echo csrf_field(); ?>
                                             <input type="hidden" name="item_id" value="<?php echo e($item['id']); ?>">
                                             <div class="input-group input-group-sm">
-                                                <input type="text" name="new_point" class="form-control" placeholder="Add a key finding (bullet point)..." required>
+                                                <input type="text" name="new_point" class="form-control"
+                                                    placeholder="Add a key finding (bullet point)..." required>
                                                 <button class="btn btn-dark" type="submit">Add</button>
                                             </div>
                                         </form>
@@ -228,81 +231,116 @@
         </div>
     </div>
 
-    
     <?php if($canInteract): ?>
-    <div class="modal fade" id="addChartModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <form action="/<?php echo e($user->profileId); ?>/paper/<?php echo e($paper->paperId); ?>/results/add-chart" method="POST" enctype="multipart/form-data">
-                    <?php echo csrf_field(); ?>
-                    <div class="modal-header">
-                        <h5 class="modal-title">Insert Chart</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            <label class="form-label">Chart Title</label>
-                            <input type="text" name="title" class="form-control" placeholder="e.g., Respondent Demographics" required>
+        <div class="modal fade" id="addChartModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <form action="/<?php echo e($user->profileId); ?>/paper/<?php echo e($paper->paperId); ?>/results/add-chart" method="POST"
+                        enctype="multipart/form-data">
+                        <?php echo csrf_field(); ?>
+                        <div class="modal-header">
+                            <h5 class="modal-title">Insert Chart</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
                         </div>
-                        <div class="mb-3">
-                            <label class="form-label">Upload Image</label>
-                            <input type="file" name="chart_image" class="form-control" accept="image/*" required>
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label class="form-label">Chart Title</label>
+                                <input type="text" name="title" class="form-control"
+                                    placeholder="e.g., Respondent Demographics" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Upload Image</label>
+                                <input type="file" name="chart_image" class="form-control" accept="image/*" required>
+                            </div>
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">Upload Chart</button>
-                    </div>
-                </form>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Upload Chart</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
+    <?php endif; ?>
+
+    <?php if(session('success')): ?>
+        <div class="modal fade custom-modal-backdrop" id="statusModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+
+                <div class="modal-content custom-modal-content type-success text-center p-4">
+
+                    <div class="modal-body px-4 py-4">
+
+                        <div class="modal-icon-wrapper mb-4 mx-auto">
+                            <i class="bi bi-check-lg custom-icon"></i>
+                        </div>
+
+                        <h4 class="fw-bold mb-3 heading-text">Success!</h4>
+                        <p class="text-muted mb-4 fs-5"><?php echo e(session('success')); ?></p>
+
+                        <button type="button" class="btn btn-custom w-100 py-3 fw-bold shadow-sm"
+                            data-bs-dismiss="modal">
+                            CONTINUE
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <?php $__env->startPush('scripts'); ?>
+            <script type="module">
+                if (window.bootstrap) {
+                    setTimeout(() => {
+                        var myModal = new bootstrap.Modal(document.getElementById('statusModal'));
+                        myModal.show();
+                    }, 300);
+                }
+            </script>
+        <?php $__env->stopPush(); ?>
     <?php endif; ?>
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startPush('scripts'); ?>
-<script>
-    // --- TABLE EDITOR LOGIC ---
-
-    function tableAddRow(id) {
-        const table = document.getElementById('table-' + id);
-        const colCount = table.rows[0].cells.length;
-        const row = table.insertRow(-1);
-        for (let i = 0; i < colCount; i++) {
-            const cell = row.insertCell(i);
-            cell.contentEditable = "true";
-            cell.classList.add('editable-cell');
-            cell.innerText = "Data";
-        }
-    }
-
-    function tableAddCol(id) {
-        const table = document.getElementById('table-' + id);
-        for (let i = 0; i < table.rows.length; i++) {
-            const cell = table.rows[i].insertCell(-1);
-            cell.contentEditable = "true";
-            cell.classList.add('editable-cell');
-            cell.innerText = i === 0 ? "Header" : "Data";
-        }
-    }
-
-    function saveTable(id) {
-        const table = document.getElementById('table-' + id);
-        let data = [];
-        
-        // Loop through rows
-        for (let i = 0; i < table.rows.length; i++) {
-            let rowData = [];
-            // Loop through cells
-            for (let j = 0; j < table.rows[i].cells.length; j++) {
-                rowData.push(table.rows[i].cells[j].innerText);
+    <script>
+        function tableAddRow(id) {
+            const table = document.getElementById('table-' + id);
+            const colCount = table.rows[0].cells.length;
+            const row = table.insertRow(-1);
+            for (let i = 0; i < colCount; i++) {
+                const cell = row.insertCell(i);
+                cell.contentEditable = "true";
+                cell.classList.add('editable-cell');
+                cell.innerText = "Data";
             }
-            data.push(rowData);
         }
 
-        // Put JSON into hidden input and submit
-        document.getElementById('input-table-' + id).value = JSON.stringify(data);
-        document.getElementById('form-table-' + id).submit();
-    }
-</script>
+        function tableAddCol(id) {
+            const table = document.getElementById('table-' + id);
+            for (let i = 0; i < table.rows.length; i++) {
+                const cell = table.rows[i].insertCell(-1);
+                cell.contentEditable = "true";
+                cell.classList.add('editable-cell');
+                cell.innerText = i === 0 ? "Header" : "Data";
+            }
+        }
+
+        function saveTable(id) {
+            const table = document.getElementById('table-' + id);
+            let data = [];
+
+            for (let i = 0; i < table.rows.length; i++) {
+                let rowData = [];
+                for (let j = 0; j < table.rows[i].cells.length; j++) {
+                    rowData.push(table.rows[i].cells[j].innerText);
+                }
+                data.push(rowData);
+            }
+
+            document.getElementById('input-table-' + id).value = JSON.stringify(data);
+            document.getElementById('form-table-' + id).submit();
+        }
+    </script>
 <?php $__env->stopPush(); ?>
+
 <?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Data D\BINUS FILES\Web Programming\andrpaid\resources\views/pages/results.blade.php ENDPATH**/ ?>

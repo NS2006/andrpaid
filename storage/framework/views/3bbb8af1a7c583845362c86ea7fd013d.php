@@ -15,7 +15,6 @@
         </button>
 
         <div class="collapse navbar-collapse" id="mainNavbar">
-
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
                     <a class="nav-link px-3 <?php echo e(request()->is('dashboard') ? 'active' : ''); ?>" href="<?php echo e(route('dashboard', ['profileId' => Auth::user()->profileId])); ?>">
@@ -28,14 +27,34 @@
                     </a>
                 </li>
 
-                <li class="nav-item">
-                    <a class="nav-link px-3 <?php echo e(request()->is('messages') ? 'active' : ''); ?>" href="/messages">
-                        <i class="bi bi-chat-dots-fill me-1"></i> Messages
-                    </a>
-                </li>
+                
+
+                <?php if (\Illuminate\Support\Facades\Blade::check('admin')): ?>
+                    <li class="nav-item">
+                        <a class="nav-link px-3 <?php echo e(request()->is('admin-panel*') ? 'active' : ''); ?>" href="/admin-panel">
+                            <i class="bi bi-shield-lock-fill me-1"></i> Admin Panel
+                        </a>
+                    </li>
+                <?php endif; ?>
             </ul>
 
             <ul class="navbar-nav ms-auto align-items-center">
+                <li class="nav-item me-2">
+                    <a class="nav-link position-relative p-2 <?php echo e(request()->is('inboxes*') ? 'text-white active' : ''); ?>" href="/inboxes" title="Inbox">
+                        <i class="bi bi-inbox-fill" style="font-size: 1.3rem;"></i>
+
+                        <?php
+                            $unreadInboxCount = \App\Models\Inbox::where("to_user_id", Auth::user()->id)->where("marked_read", false)->get()->count();
+                        ?>
+
+                        <?php if($unreadInboxCount != 0): ?>
+                            <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle">
+                                <span class="visually-hidden">New alerts</span>
+                            </span>
+                        <?php endif; ?>
+                    </a>
+                </li>
+
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle user-dropdown d-flex align-items-center gap-2" href="#"
                         role="button" data-bs-toggle="dropdown" aria-expanded="false">

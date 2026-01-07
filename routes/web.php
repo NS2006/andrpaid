@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AffiliationController;
 use App\Http\Controllers\CollaborationController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FindController;
@@ -85,7 +86,7 @@ Route::middleware('auth')->group(function () {
         });
 
         Route::get("/{inboxId}", [InboxController::class,"indexSpecificInbox"]);
-    });
+    }); 
 
     Route::prefix("/{profileId}")->group(function(){
         Route::get("/dashboard", [DashboardController::class, "index"])->name('dashboard');
@@ -99,6 +100,21 @@ Route::middleware('auth')->group(function () {
         Route::get("/followers", [ProfileController::class,"indexFollowers"]);
 
         Route::get("/researchers", [ProfileController::class,"indexResearchers"]);
+
+        Route::prefix("/grants")->group(function(){
+            Route::get("/", [AffiliationController::class, "indexOpportunities"])->name('lecturer.grants');
+            
+            Route::post("/apply", [AffiliationController::class, "sendRequest"]);
+        });
+
+        Route::prefix("/university")->group(function(){
+            // View Page
+            Route::get("/requests", [AffiliationController::class, "indexRequests"])->name('uni.requests');
+            
+            // Actions
+            Route::post("/request/approve", [AffiliationController::class, "approveRequest"]);
+            Route::post("/request/reject", [AffiliationController::class, "rejectRequest"]);
+        });
 
         Route::prefix("/paper/{paperId}")->group(function(){
             Route::get("/overview", [PaperController::class,"paperOverview"]);

@@ -8,28 +8,14 @@
     <?php echo $__env->make('partials.navbarPaper', ['paper' => $paper], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
 
     <div class="container py-5">
-
-        
         <div class="d-flex justify-content-between align-items-center mb-5">
             <div>
                 <h3 class="fw-bold text-dark mb-1">Research Workspace</h3>
                 <p class="text-muted mb-0">Select a module to begin writing or editing.</p>
             </div>
-            
-            <div>
-                <button class="btn btn-outline-secondary btn-sm me-2">
-                    <i class="bi bi-clock-history me-1"></i> History
-                </button>
-                <button class="btn btn-primary btn-sm">
-                    <i class="bi bi-file-earmark-pdf me-1"></i> Preview PDF
-                </button>
-            </div>
         </div>
 
-        
         <div class="row g-4">
-
-            
             <div class="col-md-6">
                 <a href="/<?php echo e($user->profileId); ?>/paper/<?php echo e($paper->paperId); ?>/lit-review" class="text-decoration-none">
                     <div class="workspace-card h-100 p-4">
@@ -37,7 +23,6 @@
                             <div class="module-icon bg-primary bg-opacity-10 text-primary">
                                 <i class="bi bi-book"></i>
                             </div>
-                            
                             <?php
                                 $refs = $paper->references_data;
                                 if(is_string($refs)) $refs = json_decode($refs, true);
@@ -57,10 +42,8 @@
                         <h5 class="fw-bold text-dark mb-2">Literature Review</h5>
                         <p class="text-muted small mb-4">Manage references, key points, and synthesize your theoretical framework.</p>
 
-                        
                         <div class="d-flex justify-content-between align-items-center border-top pt-3">
                             <?php
-                                // Safety check: Decode if it's a string, default to empty array if null
                                 $refs = $paper->references_data;
                                 if(is_string($refs)) $refs = json_decode($refs, true);
                                 $refCount = is_array($refs) ? count($refs) : 0;
@@ -73,7 +56,6 @@
                 </a>
             </div>
 
-            
             <div class="col-md-6">
                 <a href="/<?php echo e($user->profileId); ?>/paper/<?php echo e($paper->paperId); ?>/methodology" class="text-decoration-none">
                     <div class="workspace-card h-100 p-4">
@@ -81,8 +63,7 @@
                             <div class="module-icon bg-info bg-opacity-10 text-info">
                                 <i class="bi bi-diagram-3"></i>
                             </div>
-                            
-                            
+
                             <?php if($paper->methodology_finalized): ?>
                                 <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25">
                                     <i class="bi bi-check-lg me-1"></i> Finalized
@@ -110,7 +91,6 @@
                 </a>
             </div>
 
-            
             <div class="col-md-6">
                 <a href="/<?php echo e($user->profileId); ?>/paper/<?php echo e($paper->paperId); ?>/results" class="text-decoration-none">
                     <div class="workspace-card h-100 p-4">
@@ -118,8 +98,7 @@
                             <div class="module-icon bg-warning bg-opacity-10 text-warning">
                                 <i class="bi bi-bar-chart-fill"></i>
                             </div>
-                            
-                            
+
                             <?php
                                 $items = $paper->results_data ?? [];
                                 $hasItems = !empty($items);
@@ -157,7 +136,6 @@
                 </a>
             </div>
 
-            
             <div class="col-md-6">
                 <a href="/<?php echo e($user->profileId); ?>/paper/<?php echo e($paper->paperId); ?>/conclusion" class="text-decoration-none">
                     <div class="workspace-card h-100 p-4">
@@ -165,8 +143,7 @@
                             <div class="module-icon bg-success bg-opacity-10 text-success">
                                 <i class="bi bi-check-all"></i>
                             </div>
-                            
-                            
+
                             <?php
                                 $hasContent = !empty($paper->conclusion_summary);
                             ?>

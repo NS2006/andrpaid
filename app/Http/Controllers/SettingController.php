@@ -60,6 +60,7 @@ class SettingController extends Controller
                 'province_id'    => 'required|string',
                 'linkedin_url'    => 'nullable|string',
                 'portfolio_url'    => 'nullable|string',
+                'nidn' => 'string|nullable'
             ]);
 
             $accRole = $user->lecturer;
@@ -67,6 +68,7 @@ class SettingController extends Controller
             $accRole->update([
                 "linkedinUrl" => $validated["linkedin_url"],
                 "portfolioUrl" => $validated["portfolio_url"],
+                'nidn' => $validated['nidn'],
             ]);
         } else if($user->isUniversity()){
             $validated = $request->validate([

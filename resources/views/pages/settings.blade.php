@@ -93,6 +93,13 @@
                                     @endnotadmin
 
                                     @lecturer
+                                        <div class="col-md-12">
+                                            <label class="form-label fw-semibold">NIDN</label>
+                                            <input type="text" class="form-control" name="nidn"
+                                                placeholder="e.g. 0023098101"
+                                                value="{{ $user->lecturer->nidn }}">
+                                            <div class="form-text">Your unique 10-digit lecturer identification number.</div>
+                                        </div>
                                         <div class="col-md-6">
                                             <label class="form-label fw-semibold">LinkedIn URL</label>
                                             <div class="input-group">

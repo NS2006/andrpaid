@@ -219,7 +219,6 @@
                         div.className = 'field-option';
                         div.textContent = field.name;
 
-                        // Check state
                         const isSelected = selectedIds.includes(String(field.researchFieldId));
                         const isFull = selectedIds.length >= MAX_SELECTION;
 
@@ -230,7 +229,6 @@
                             div.title = "Maximum 3 fields allowed";
                         }
 
-                        // Click Handler
                         if (!isSelected && !isFull) {
                             div.addEventListener('click', (e) => {
                                 e.stopPropagation();
@@ -251,18 +249,14 @@
                     const id = String(field.researchFieldId);
                     if (selectedIds.includes(id)) return;
 
-                    // Add to state
                     selectedIds.push(id);
 
-                    // Update UI
                     renderTags();
                     updateHiddenInputs();
 
-                    // Remove error styling if exists
                     visualBox.style.borderColor = '#d0d7de';
                     errorMsg.classList.add('d-none');
 
-                    // Re-render dropdown to update disabled states
                     renderDropdown(allFields);
                 }
 
@@ -274,11 +268,10 @@
                 }
 
                 function renderTags() {
-                    // Clear current tags (keep input)
+                    
                     const tags = visualBox.querySelectorAll('.field-tag');
                     tags.forEach(t => t.remove());
 
-                    // Add new tags before the input
                     selectedIds.forEach(id => {
                         const field = allFields.find(f => String(f.researchFieldId) === id);
                         if (!field) return;
@@ -289,11 +282,9 @@
                 ${field.name}
                 <span class="remove-tag" onclick="window.removeFieldTag('${id}')">&times;</span>
             `;
-                        // Insert before the search input
                         visualBox.insertBefore(tag, searchInput);
                     });
 
-                    // Update placeholder
                     if (selectedIds.length > 0) {
                         searchInput.placeholder = "";
                     } else {

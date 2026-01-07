@@ -2,7 +2,6 @@
     $profileId = $paper->lecturer->user->profileId;
 @endphp
 
-{{-- PART 1: CONTEXT HEADER (Scrolls away) --}}
 <div class="paper-context-header border-bottom bg-white pt-3 pb-3">
     <div class="container">
         <div class="d-flex justify-content-between align-items-center">
@@ -35,7 +34,6 @@
     </div>
 </div>
 
-{{-- PART 2: STICKY NAVIGATION TABS --}}
 <div class="paper-navbar-sticky border-bottom bg-white sticky-top">
     <div class="container">
         <div class="paper-nav-scroller">

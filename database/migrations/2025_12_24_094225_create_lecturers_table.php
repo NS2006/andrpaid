@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('portfolioUrl')->nullable();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('province_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+            $table->string('nidn', 20)->nullable()->unique()->nullable();
             $table->timestamps();
         });
     }

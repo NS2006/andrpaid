@@ -12,7 +12,7 @@
                 <nav class="settings-sidebar position-sticky" style="top: 2rem;">
                     <h5 class="fw-bold mb-4 px-3">Settings</h5>
                     <div class="list-group list-group-flush border-0">
-                        <a href="#profile" class="list-group-item list-group-item-action active border-0 rounded-3 mb-1">
+                        <a href="#profile" class="list-group-item list-group-item-action border-0 rounded-3 mb-1">
                             <i class="bi bi-person-circle me-2"></i> Public Profile
                         </a>
                         <?php if (\Illuminate\Support\Facades\Blade::check('lecturer')): ?>
@@ -75,20 +75,31 @@
                                         <textarea class="form-control" name="description" rows="4" placeholder="Tell us a little bit about yourself..."><?php echo e($user->description); ?></textarea>
                                     </div>
 
-                                    <div class="col-md-12">
-                                        <label class="form-label fw-semibold">Province / Location</label>
-                                        <select class="form-select" name="province_id">
-                                            <?php $__currentLoopData = $allProvinces; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $eachProvince): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                                <option <?php echo e($eachProvince->name === $province->name ? 'selected' : ''); ?>
+                                    <?php if (\Illuminate\Support\Facades\Blade::check('notadmin')): ?>
+                                        <div class="col-md-12">
+                                            <label class="form-label fw-semibold">Province / Location</label>
+                                            <select class="form-select" name="province_id">
+                                                <?php $__currentLoopData = $allProvinces; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $eachProvince): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                    <option
+                                                        <?php echo e(isset($province) && $eachProvince->name === $province->name ? 'selected' : ''); ?>
 
-                                                    value="<?php echo e($eachProvince->provinceId); ?>"><?php echo e($eachProvince->name); ?>
+                                                        value="<?php echo e($eachProvince->provinceId); ?>">
+                                                        <?php echo e($eachProvince->name); ?>
 
-                                                </option>
-                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                                        </select>
-                                    </div>
+                                                    </option>
+                                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                            </select>
+                                        </div>
+                                    <?php endif; ?>
 
                                     <?php if (\Illuminate\Support\Facades\Blade::check('lecturer')): ?>
+                                        <div class="col-md-12">
+                                            <label class="form-label fw-semibold">NIDN</label>
+                                            <input type="text" class="form-control" name="nidn"
+                                                placeholder="e.g. 0023098101"
+                                                value="<?php echo e($user->lecturer->nidn); ?>">
+                                            <div class="form-text">Your unique 10-digit lecturer identification number.</div>
+                                        </div>
                                         <div class="col-md-6">
                                             <label class="form-label fw-semibold">LinkedIn URL</label>
                                             <div class="input-group">
@@ -146,7 +157,6 @@
                                 ?>
 
                                 <?php if($affiliation && $affiliation->status === 'verified'): ?>
-
                                     <div class="d-flex align-items-center gap-4 mb-4">
                                         <div class="bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center flex-shrink-0"
                                             style="width: 70px; height: 70px;">
@@ -441,52 +451,54 @@
 
                             <hr class="my-4">
 
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <h6 class="fw-bold mb-1 text-danger">Delete Account</h6>
-                                    <p class="text-muted mb-0 small">Permanently remove your account and all data.</p>
+                            <?php if (\Illuminate\Support\Facades\Blade::check('notadmin')): ?>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="fw-bold mb-1 text-danger">Delete Account</h6>
+                                        <p class="text-muted mb-0 small">Permanently remove your account and all data.</p>
+                                    </div>
+                                    <button class="btn btn-outline-danger btn-sm" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#collapseDelete" aria-expanded="false"
+                                        aria-controls="collapseDelete">
+                                        Delete
+                                    </button>
                                 </div>
-                                <button class="btn btn-outline-danger btn-sm" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#collapseDelete" aria-expanded="false"
-                                    aria-controls="collapseDelete">
-                                    Delete
-                                </button>
-                            </div>
 
-                            <div class="collapse mt-3" id="collapseDelete">
-                                <div class="card card-body border-danger bg-danger bg-opacity-10">
-                                    <h6 class="fw-bold text-danger mb-2">Are you absolutely sure?</h6>
-                                    <p class="small text-danger mb-3">
-                                        This action cannot be undone. This will permanently delete your profile, papers, and
-                                        remove your data from our servers.
-                                    </p>
+                                <div class="collapse mt-3" id="collapseDelete">
+                                    <div class="card card-body border-danger bg-danger bg-opacity-10">
+                                        <h6 class="fw-bold text-danger mb-2">Are you absolutely sure?</h6>
+                                        <p class="small text-danger mb-3">
+                                            This action cannot be undone. This will permanently delete your profile, papers, and
+                                            remove your data from our servers.
+                                        </p>
 
-                                    <form action="/settings/delete-account" method="POST">
-                                        <?php echo csrf_field(); ?>
+                                        <form action="/settings/delete-account" method="POST">
+                                            <?php echo csrf_field(); ?>
 
-                                        <div class="mb-3">
-                                            <label class="form-label fw-bold small text-danger">
-                                                Type "<span class="user-select-all">DELETE ACCOUNT</span>" to confirm
-                                            </label>
-                                            <input type="text" class="form-control border-danger"
-                                                id="deleteConfirmationInput" placeholder="DELETE ACCOUNT"
-                                                autocomplete="off">
-                                        </div>
+                                            <div class="mb-3">
+                                                <label class="form-label fw-bold small text-danger">
+                                                    Type "<span class="user-select-all">DELETE ACCOUNT</span>" to confirm
+                                                </label>
+                                                <input type="text" class="form-control border-danger"
+                                                    id="deleteConfirmationInput" placeholder="DELETE ACCOUNT"
+                                                    autocomplete="off">
+                                            </div>
 
-                                        <div class="d-flex justify-content-end gap-2">
-                                            <button type="button" class="btn btn-sm btn-light text-danger border"
-                                                data-bs-toggle="collapse" data-bs-target="#collapseDelete">
-                                                Cancel
-                                            </button>
+                                            <div class="d-flex justify-content-end gap-2">
+                                                <button type="button" class="btn btn-sm btn-light text-danger border"
+                                                    data-bs-toggle="collapse" data-bs-target="#collapseDelete">
+                                                    Cancel
+                                                </button>
 
-                                            <button type="submit" class="btn btn-sm btn-danger" id="finalDeleteBtn"
-                                                disabled>
-                                                Delete Account
-                                            </button>
-                                        </div>
-                                    </form>
+                                                <button type="submit" class="btn btn-sm btn-danger" id="finalDeleteBtn"
+                                                    disabled>
+                                                    Delete Account
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
                                 </div>
-                            </div>
+                            <?php endif; ?>
 
                         </div>
                     </div>
@@ -589,27 +601,6 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            const sections = document.querySelectorAll(".settings-section");
-            const navLi = document.querySelectorAll(".settings-sidebar .list-group-item");
-
-            window.onscroll = () => {
-                var current = "";
-                sections.forEach((section) => {
-                    const sectionTop = section.offsetTop;
-                    if (scrollY >= sectionTop - 200) {
-                        current = section.getAttribute("id");
-                    }
-                });
-
-                navLi.forEach((li) => {
-                    li.classList.remove("active");
-                    if (li.getAttribute("href").includes(current)) {
-                        li.classList.add("active");
-                    }
-                });
-            };
-
-
             const deleteInput = document.getElementById('deleteConfirmationInput');
             const deleteBtn = document.getElementById('finalDeleteBtn');
             const confirmationPhrase = "DELETE ACCOUNT";

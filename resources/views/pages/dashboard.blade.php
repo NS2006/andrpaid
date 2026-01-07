@@ -50,17 +50,16 @@
 @endsection
 
 @section('content')
-    @include('partials.navbarProfile')
+    @include('partials.navbarProfile', ['navbarProfileData' => $navbarProfileData, 'user' => $user])
 
     <div class="container py-5">
         
-        {{-- HEADER --}}
         <div class="d-flex justify-content-between align-items-end mb-5">
             <div>
                 <h2 class="fw-bold text-dark mb-1">Dashboard</h2>
                 <p class="text-muted mb-0">
                     Welcome back, <span class="fw-bold text-dark">{{ $user->name }}</span>. 
-                    You have <span class="text-primary fw-bold">{{ $pendingRequestsCount }} pending tasks</span>.
+                    You have <span class="text-primary fw-bold">{{ $pendingRequestsCount }} pending request</span>.
                 </p>
             </div>
             <div>
@@ -70,9 +69,7 @@
             </div>
         </div>
 
-        {{-- STATS ROW --}}
         <div class="row g-4 mb-5">
-            {{-- Active Projects --}}
             <div class="col-md-3">
                 <div class="stat-card">
                     <div class="d-flex justify-content-between align-items-start">
@@ -92,31 +89,43 @@
                 </div>
             </div>
 
-            {{-- Pending Requests --}}
             <div class="col-md-3">
-                <div class="stat-card">
-                    <div class="d-flex justify-content-between align-items-start">
-                        <div>
-                            <div class="text-muted small fw-bold text-uppercase mb-1">Pending Requests</div>
-                            <h2 class="fw-bold mb-0 text-dark">{{ $pendingRequestsCount }}</h2>
+                @php
+                    if (isset($isUniversity) && $isUniversity) {
+                        $link = url("/" . $user->profileId . "/university/requests");
+                        $cardTitle = "Affiliation Requests";
+                    } else {
+                        $link = url("/" . $user->profileId . "/grants");
+                        $cardTitle = "Pending Grants";
+                    }
+                @endphp
+
+                <a href="{{ $link }}" class="text-decoration-none">
+                    <div class="stat-card">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <div class="text-muted small fw-bold text-uppercase mb-1">
+                                    {{ $cardTitle }}
+                                </div>
+                                <h2 class="fw-bold mb-0 text-dark">{{ $pendingRequestsCount }}</h2>
+                            </div>
+                            <div class="stat-icon bg-warning bg-opacity-10 text-warning">
+                                <i class="bi bi-person-plus-fill"></i>
+                            </div>
                         </div>
-                        <div class="stat-icon bg-warning bg-opacity-10 text-warning">
-                            <i class="bi bi-person-plus-fill"></i>
+                        <div class="mt-3">
+                            @if($pendingRequestsCount > 0)
+                                <span class="badge bg-warning bg-opacity-10 text-warning rounded-pill">
+                                    Status Update
+                                </span>
+                            @else
+                                <span class="text-muted small">View opportunities</span>
+                            @endif
                         </div>
                     </div>
-                    <div class="mt-3">
-                        @if($pendingRequestsCount > 0)
-                            <span class="badge bg-warning bg-opacity-10 text-warning rounded-pill">
-                                Action required
-                            </span>
-                        @else
-                            <span class="text-muted small">All caught up!</span>
-                        @endif
-                    </div>
-                </div>
+                </a>
             </div>
 
-            {{-- Total Citations --}}
             <div class="col-md-3">
                 <div class="stat-card">
                     <div class="d-flex justify-content-between align-items-start">
@@ -134,12 +143,11 @@
                 </div>
             </div>
 
-            {{-- Messages --}}
             <div class="col-md-3">
                 <div class="stat-card">
                     <div class="d-flex justify-content-between align-items-start">
                         <div>
-                            <div class="text-muted small fw-bold text-uppercase mb-1">Messages</div>
+                            <div class="text-muted small fw-bold text-uppercase mb-1">Inbox</div>
                             <h2 class="fw-bold mb-0 text-dark">{{ $messageCount }}</h2>
                         </div>
                         <div class="stat-icon bg-danger bg-opacity-10 text-danger">
@@ -156,13 +164,11 @@
         </div>
 
         <div class="row g-5">
-            {{-- LEFT COLUMN: Active Collaborations --}}
             <div class="col-lg-8">
                 <h5 class="fw-bold text-dark mb-4">Active Collaborations</h5>
 
                 @if($activePapers->count() > 0)
                     @foreach($activePapers as $paper)
-                        {{-- Determine Phase Logic --}}
                         @php
                             $phase = 'Phase 1: Literature Review';
                             $phaseColor = 'primary';
@@ -203,19 +209,16 @@
                             </p>
 
                             <div class="d-flex justify-content-between align-items-center border-top pt-3 mt-3">
-                                {{-- Phase Badge --}}
+                        
                                 <span class="badge bg-{{ $phaseColor }} bg-opacity-10 text-{{ $phaseColor }} border border-{{ $phaseColor }} border-opacity-25 rounded-pill">
                                     {{ $phase }}
                                 </span>
 
-                                {{-- Collaborators Avatars --}}
                                 <div class="avatar-group">
-                                    {{-- Owner Avatar --}}
                                     <img src="https://ui-avatars.com/api/?name={{ $paper->lecturer->user->name }}&background=random" 
                                          class="user-avatar-sm shadow-sm" 
                                          title="Owner: {{ $paper->lecturer->user->name }}">
                                     
-                                    {{-- Fake +2 for demo visual --}}
                                     <div class="user-avatar-sm bg-light text-secondary d-flex align-items-center justify-content-center small fw-bold shadow-sm" style="font-size: 0.7rem;">+2</div>
                                 </div>
                             </div>
@@ -229,10 +232,8 @@
                 @endif
             </div>
 
-            {{-- RIGHT COLUMN: Sidebar --}}
             <div class="col-lg-4">
                 
-                {{-- Recommended Researchers --}}
                 <div class="sidebar-card">
                     <h6 class="fw-bold text-dark mb-3">Recommended for You</h6>
                     
@@ -263,7 +264,6 @@
                                         </a>
                                     </h6>
 
-                                    {{-- Description / Affiliation --}}
                                     <p class="text-muted small mb-0 text-truncate">
                                         {{ $subText }}
                                     </p>
@@ -281,7 +281,6 @@
                     </div>
                 </div>
 
-                {{-- New Grant Alert --}}
                 <div class="sidebar-card bg-primary bg-opacity-10 border border-primary border-opacity-10">
                     <div class="d-flex align-items-center gap-2 mb-2">
                         <i class="bi bi-award-fill text-primary"></i>

@@ -21,13 +21,14 @@ class LecturerSeeder extends Seeder
             'name'=> "Niko Sutiono",
             'email'=> "nikosutiono11@gmail.com",
             'password' => bcrypt("aa"),
-            'description'=> "I am atomic"
+            'description'=> "I am atomic",
         ]);
 
         $province = Province::where('provinceId', "banten" )->first();
 
         $lecturer = Lecturer::create([
             "user_id"=> $user->id,
+            "nidn" => "921838384939",
             "province_id" => $province->id
         ]);
 
@@ -40,13 +41,14 @@ class LecturerSeeder extends Seeder
             'name'=> "LC140",
             'email'=> "lc140-lcas@binus.edu",
             'password' => bcrypt("aa"),
-            'description'=> "I am LC140 URAAAAA"
+            'description'=> "I am LC140 URAAAAA",
         ]);
-
+        
         $province = Province::where('provinceId', "banten" )->first();
-
+        
         $lecturer = Lecturer::create([
             "user_id"=> $user->id,
+            'nidn' => "0123456789",
             "province_id" => $province->id
         ]);
 
@@ -56,13 +58,14 @@ class LecturerSeeder extends Seeder
             'name'=> "Bahlil Lahadalia",
             'email'=> "contactcenter136@esdm.go.id",
             'password' => bcrypt("bahlilsunshine"),
-            'description'=> "Saya penyuka sawit 😍"
+            'description'=> "Saya penyuka sawit 😍",
         ]);
-
+        
         $province = Province::where('provinceId', "banten" )->first();
-
+        
         $lecturer = Lecturer::create([
             "user_id"=> $user->id,
+            'nidn' => "123456789",
             "province_id" => $province->id
         ]);
 

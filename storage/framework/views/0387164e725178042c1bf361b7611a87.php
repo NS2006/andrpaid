@@ -48,17 +48,16 @@
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startSection('content'); ?>
-    <?php echo $__env->make('partials.navbarProfile', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+    <?php echo $__env->make('partials.navbarProfile', ['navbarProfileData' => $navbarProfileData, 'user' => $user], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
 
     <div class="container py-5">
-        
         
         <div class="d-flex justify-content-between align-items-end mb-5">
             <div>
                 <h2 class="fw-bold text-dark mb-1">Dashboard</h2>
                 <p class="text-muted mb-0">
                     Welcome back, <span class="fw-bold text-dark"><?php echo e($user->name); ?></span>. 
-                    You have <span class="text-primary fw-bold"><?php echo e($pendingRequestsCount); ?> pending tasks</span>.
+                    You have <span class="text-primary fw-bold"><?php echo e($pendingRequestsCount); ?> pending request</span>.
                 </p>
             </div>
             <div>
@@ -68,9 +67,7 @@
             </div>
         </div>
 
-        
         <div class="row g-4 mb-5">
-            
             <div class="col-md-3">
                 <div class="stat-card">
                     <div class="d-flex justify-content-between align-items-start">
@@ -90,31 +87,44 @@
                 </div>
             </div>
 
-            
             <div class="col-md-3">
-                <div class="stat-card">
-                    <div class="d-flex justify-content-between align-items-start">
-                        <div>
-                            <div class="text-muted small fw-bold text-uppercase mb-1">Pending Requests</div>
-                            <h2 class="fw-bold mb-0 text-dark"><?php echo e($pendingRequestsCount); ?></h2>
+                <?php
+                    if (isset($isUniversity) && $isUniversity) {
+                        $link = url("/" . $user->profileId . "/university/requests");
+                        $cardTitle = "Affiliation Requests";
+                    } else {
+                        $link = url("/" . $user->profileId . "/grants");
+                        $cardTitle = "Pending Grants";
+                    }
+                ?>
+
+                <a href="<?php echo e($link); ?>" class="text-decoration-none">
+                    <div class="stat-card">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <div class="text-muted small fw-bold text-uppercase mb-1">
+                                    <?php echo e($cardTitle); ?>
+
+                                </div>
+                                <h2 class="fw-bold mb-0 text-dark"><?php echo e($pendingRequestsCount); ?></h2>
+                            </div>
+                            <div class="stat-icon bg-warning bg-opacity-10 text-warning">
+                                <i class="bi bi-person-plus-fill"></i>
+                            </div>
                         </div>
-                        <div class="stat-icon bg-warning bg-opacity-10 text-warning">
-                            <i class="bi bi-person-plus-fill"></i>
+                        <div class="mt-3">
+                            <?php if($pendingRequestsCount > 0): ?>
+                                <span class="badge bg-warning bg-opacity-10 text-warning rounded-pill">
+                                    Status Update
+                                </span>
+                            <?php else: ?>
+                                <span class="text-muted small">View opportunities</span>
+                            <?php endif; ?>
                         </div>
                     </div>
-                    <div class="mt-3">
-                        <?php if($pendingRequestsCount > 0): ?>
-                            <span class="badge bg-warning bg-opacity-10 text-warning rounded-pill">
-                                Action required
-                            </span>
-                        <?php else: ?>
-                            <span class="text-muted small">All caught up!</span>
-                        <?php endif; ?>
-                    </div>
-                </div>
+                </a>
             </div>
 
-            
             <div class="col-md-3">
                 <div class="stat-card">
                     <div class="d-flex justify-content-between align-items-start">
@@ -132,12 +142,11 @@
                 </div>
             </div>
 
-            
             <div class="col-md-3">
                 <div class="stat-card">
                     <div class="d-flex justify-content-between align-items-start">
                         <div>
-                            <div class="text-muted small fw-bold text-uppercase mb-1">Messages</div>
+                            <div class="text-muted small fw-bold text-uppercase mb-1">Inbox</div>
                             <h2 class="fw-bold mb-0 text-dark"><?php echo e($messageCount); ?></h2>
                         </div>
                         <div class="stat-icon bg-danger bg-opacity-10 text-danger">
@@ -154,13 +163,11 @@
         </div>
 
         <div class="row g-5">
-            
             <div class="col-lg-8">
                 <h5 class="fw-bold text-dark mb-4">Active Collaborations</h5>
 
                 <?php if($activePapers->count() > 0): ?>
                     <?php $__currentLoopData = $activePapers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $paper): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                        
                         <?php
                             $phase = 'Phase 1: Literature Review';
                             $phaseColor = 'primary';
@@ -204,19 +211,16 @@
                             </p>
 
                             <div class="d-flex justify-content-between align-items-center border-top pt-3 mt-3">
-                                
+                        
                                 <span class="badge bg-<?php echo e($phaseColor); ?> bg-opacity-10 text-<?php echo e($phaseColor); ?> border border-<?php echo e($phaseColor); ?> border-opacity-25 rounded-pill">
                                     <?php echo e($phase); ?>
 
                                 </span>
 
-                                
                                 <div class="avatar-group">
-                                    
                                     <img src="https://ui-avatars.com/api/?name=<?php echo e($paper->lecturer->user->name); ?>&background=random" 
                                          class="user-avatar-sm shadow-sm" 
                                          title="Owner: <?php echo e($paper->lecturer->user->name); ?>">
-                                    
                                     
                                     <div class="user-avatar-sm bg-light text-secondary d-flex align-items-center justify-content-center small fw-bold shadow-sm" style="font-size: 0.7rem;">+2</div>
                                 </div>
@@ -231,9 +235,7 @@
                 <?php endif; ?>
             </div>
 
-            
             <div class="col-lg-4">
-                
                 
                 <div class="sidebar-card">
                     <h6 class="fw-bold text-dark mb-3">Recommended for You</h6>
@@ -266,7 +268,6 @@
                                         </a>
                                     </h6>
 
-                                    
                                     <p class="text-muted small mb-0 text-truncate">
                                         <?php echo e($subText); ?>
 
@@ -285,7 +286,6 @@
                     </div>
                 </div>
 
-                
                 <div class="sidebar-card bg-primary bg-opacity-10 border border-primary border-opacity-10">
                     <div class="d-flex align-items-center gap-2 mb-2">
                         <i class="bi bi-award-fill text-primary"></i>

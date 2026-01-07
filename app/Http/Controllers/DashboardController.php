@@ -16,13 +16,27 @@ class DashboardController extends Controller
     {
         $user = User::where("profileId", $profileId)->firstOrFail();
 
-        // Common Data
         $data = [
             'user' => $user,
-            'navbarProfileData' => $user,
-            'messageCount' => 5,    // Mock
-            'unreadMessages' => 2,  // Mock
-            'citations' => 0,       // Mock default
+            'navbarProfileData' => [
+                'profileId' => $user->profileId,
+                'papersCount' => $user->lecturer
+                    ? \App\Models\Paper::where('lecturer_id', $user->lecturer->id)->count()
+                    : ($user->university
+                        ? \App\Models\Paper::whereIn('lecturer_id', \App\Models\Affiliation::where('university_id', $user->university->id)
+                            ->where('status', 'accepted')
+                            ->pluck('lecturer_id'))->count()
+                        : 0),
+                'starsCount' => 0,
+                'researchersCount' => $user->university
+                    ? \App\Models\Affiliation::where('university_id', $user->university->id)
+                        ->where('status', 'accepted')
+                        ->count()
+                    : 0,
+            ],
+            'messageCount' => 0,    
+            'unreadMessages' => 0,  
+            'citations' => 0,       
         ];
 
         // ==========================================
@@ -32,23 +46,19 @@ class DashboardController extends Controller
             $university = $user->university;
             
             // 1. STATS
-            // Count approved lecturers
             $approvedLecturerIds = Affiliation::where('university_id', $university->id)
                 ->where('status', 'accepted')
                 ->pluck('lecturer_id');
             
             $lecturerCount = $approvedLecturerIds->count();
 
-            // Active Projects: Papers owned by my lecturers
             $activeProjectsCount = Paper::whereIn('lecturer_id', $approvedLecturerIds)->count();
 
-            // Pending Requests: Lecturers asking to join this university
             $pendingRequestsCount = Affiliation::where('university_id', $university->id)
                 ->where('status', 'pending')
                 ->count();
 
             // 2. RECENT ACTIVITY LIST
-            // Show latest papers published by this university's lecturers
             $activePapers = Paper::with(['lecturer.user', 'paperType'])
                 ->whereIn('lecturer_id', $approvedLecturerIds)
                 ->latest('created_at')
@@ -62,14 +72,13 @@ class DashboardController extends Controller
                 ->take(3)
                 ->get();
 
-            // Merge into data
             $data['isUniversity'] = true;
             $data['activeProjectsCount'] = $activeProjectsCount;
             $data['pendingRequestsCount'] = $pendingRequestsCount;
-            $data['lecturerCount'] = $lecturerCount; // Specific to Uni
+            $data['lecturerCount'] = $lecturerCount; 
             $data['activePapers'] = $activePapers;
-            $data['recommendations'] = $recommendations; // Pass as users or lecturers depending on view
-            $data['citations'] = 8500; // Mock aggregate for Uni
+            $data['recommendations'] = $recommendations; 
+            $data['citations'] = 8500; 
         }
 
         // ==========================================
@@ -84,7 +93,7 @@ class DashboardController extends Controller
                     $q->where('lecturer_id', $lecturer->id);
                 })->count();
 
-            $pendingRequestsCount = CollaborationRequest::where('to_lecturer_id', $lecturer->id)
+            $pendingRequestsCount = Affiliation::where('lecturer_id', $lecturer->id)
                 ->where('status', 'pending')
                 ->count();
 
@@ -105,17 +114,15 @@ class DashboardController extends Controller
                 ->take(3)
                 ->get();
 
-            // Merge into data
             $data['isUniversity'] = false;
             $data['activeProjectsCount'] = $activeProjectsCount;
             $data['pendingRequestsCount'] = $pendingRequestsCount;
             $data['activePapers'] = $activePapers;
             $data['recommendations'] = $recommendations;
-            $data['citations'] = 1240; // Mock for Lecturer
+            $data['citations'] = 1240; 
         } 
         
         else {
-            // Fallback for Admin or unknown roles
             abort(403, 'Unauthorized role');
         }
 

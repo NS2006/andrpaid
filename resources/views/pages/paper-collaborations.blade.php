@@ -51,7 +51,6 @@
                 </div>
             </div>
 
-            {{-- REJECT MODAL --}}
             <div class="modal fade" id="rejectInviteModal" tabindex="-1">
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content border-0 shadow rounded-4">
@@ -85,7 +84,6 @@
             </div>
         @endif
 
-        {{-- COLLABORATION STATUS TOGGLE --}}
         @if ($isOwner)
             <div class="card border-0 shadow-sm mb-5 overflow-hidden">
                 <div class="card-body p-4 d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
@@ -126,7 +124,6 @@
             </div>
         @endif
 
-        {{-- TEAM & ROLES --}}
         <div class="d-flex flex-column flex-md-row justify-content-between align-items-end mb-4 gap-3" id="roles">
             <div>
                 <h4 class="fw-bold text-dark mb-1">Project Roles & Members</h4>
@@ -176,11 +173,10 @@
                 </div>
             </div>
 
-            {{-- PROJECT SLOTS --}}
             @foreach ($slots as $slot)
                 <div class="col-md-6 col-lg-4">
                     @if ($slot->lecturer)
-                        {{-- FILLED CARD --}}
+                     
                         <div class="card collab-card h-100 rounded-4">
                             <div class="card-header bg-light border-0 py-3">
                                 <div class="d-flex justify-content-between align-items-center">
@@ -237,7 +233,7 @@
                             </div>
                         </div>
                     @else
-                        {{-- VACANT CARD --}}
+                      
                         <div class="card vacant-card h-100 rounded-4">
                             <div class="card-header bg-transparent border-0 py-3">
                                 <div class="d-flex justify-content-between align-items-center">
@@ -307,7 +303,6 @@
             @endforeach
         </div>
 
-        {{-- INVITATION --}}
         <span id="invitations"></span>
         @if ($isOwner && $invitations->count() != 0)
             <div class="mb-5">
@@ -444,7 +439,6 @@
             </div>
         @endif
 
-        {{-- REQUESTS SECTION --}}
         @if ($isOwner && $requests->count() != 0)
             <div class="mb-5">
                 <div class="d-flex justify-content-between align-items-center mb-3">
@@ -556,7 +550,6 @@
         @endif
     </div>
 
-    {{-- JOIN REQUEST MODAL --}}
     <div class="modal fade" id="joinRequestModal" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content border-0 shadow rounded-4">
@@ -600,7 +593,6 @@
         </div>
     </div>
 
-    {{-- EDIT ROLE MODAL --}}
     <div class="modal fade" id="editRoleModal" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content border-0 shadow rounded-4">
@@ -632,7 +624,6 @@
         </div>
     </div>
 
-    {{-- REMOVE MEMBER MODAL --}}
     <div class="modal fade" id="removeMemberModal" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content border-0 shadow rounded-4">
@@ -681,7 +672,6 @@
         </div>
     </div>
 
-    {{-- ADD ROLE MODAL --}}
     <div class="modal fade" id="addRoleModal" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content border-0 shadow rounded-4">
@@ -716,7 +706,6 @@
         </div>
     </div>
 
-    {{-- INVITE MODAL --}}
     <div class="modal fade" id="inviteModal" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content border-0 shadow rounded-4">
@@ -741,7 +730,6 @@
         </div>
     </div>
 
-    {{-- SUCCESS MODAL --}}
     @if (session('success'))
         <div class="modal fade custom-modal-backdrop" id="statusModal" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
@@ -779,7 +767,6 @@
         @endpush
     @endif
 
-    {{-- REJECT REQUEST MODAL --}}
     <div class="modal fade" id="rejectRequestModal" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content border-0 shadow rounded-4">
