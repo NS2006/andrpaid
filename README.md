@@ -172,7 +172,7 @@ Access the application at: **[http://127.0.0.1:8000](http://127.0.0.1:8000)**
 ## 🔮 Future Roadmap
 * **AI Integration:** Auto-summarization of uploaded PDF literature using LLMs.
 * **Real-time Notifications:** WebSockets (Pusher) for "User X edited this section" alerts.
-* **Kanban Board:** Task assignment within the Workspace (To Do / In Progress / Done).
+* **Kanban Board:** Task assignment within the Workspace (To Do/In Progress/Done).
 * **Grant Marketplace:** Universities posting funding opportunities directly to the dashboard.
 
 ---
